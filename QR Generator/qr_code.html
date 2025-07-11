@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code Generator | Euzaar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- qrious CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #6536f8 0%, #b06ab3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main-container {
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 6px 24px rgba(70,0,220,0.20);
+            border-radius: 28px;
+            padding: 40px 32px 32px 32px;
+            max-width: 380px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.18);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .brand-icon {
+            background: linear-gradient(135deg,#6536f8 70%, #b06ab3 100%);
+            color: #fff;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 7px 11px;
+            font-size: 22px;
+            box-shadow: 0 2px 8px rgba(70,0,220,0.13);
+        }
+        .brand-text {
+            font-weight: 600;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+            color: #fff;
+            text-shadow: 0 2px 7px rgba(101,54,248,0.07);
+        }
+        .title {
+            font-size: 1.37em;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 18px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .input-group {
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a28cd6;
+            font-size: 18px;
+        }
+        .qr-input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border: none;
+            border-radius: 9px;
+            font-size: 1em;
+            font-family: inherit;
+            background: rgba(255,255,255,0.82);
+            box-shadow: 0 1px 8px rgba(101,54,248,0.07);
+            outline: none;
+            transition: box-shadow 0.17s;
+        }
+        .qr-input:focus {
+            box-shadow: 0 2px 16px rgba(101,54,248,0.15);
+        }
+        .btn {
+            width: 100%;
+            background: linear-gradient(90deg,#6536f8 60%, #b06ab3 100%);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            padding: 12px;
+            font-size: 1.07em;
+            font-weight: 500;
+            margin-bottom: 10px;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            box-shadow: 0 1px 7px rgba(101,54,248,0.10);
+            transition: background 0.18s, box-shadow 0.18s;
+        }
+        .btn:disabled {
+            background: #e2e2e2;
+            color: #b6b6b6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .qr-area {
+            margin: 18px 0 12px 0;
+            width: 244px; height: 244px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.34);
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(101,54,248,0.11);
+            border: 1.5px solid rgba(101,54,248,0.10);
+            transition: background 0.16s;
+        }
+        #qrCanvas {
+            background: #fff;
+        }
+        .note {
+            text-align: center;
+            color: #d6cbf5;
+            font-size: 13px;
+            margin-top: 10px;
+            letter-spacing: 0.1px;
+        }
+        @media (max-width:500px) {
+            .main-container {
+                max-width: 97vw;
+                padding: 26px 7vw;
+            }
+            .qr-area { width: 98vw; max-width: 94vw; height: auto; min-height: 164px;}
+        }
+    </style>
+    <!-- Feather icons CDN for input icon -->
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="brand">
+            <span class="brand-icon">E</span>
+            <span class="brand-text">Euzaar QR</span>
+        </div>
+        <div class="title">Generate a QR Code for anything</div>
+        <div class="input-group">
+            <span class="input-icon" data-feather="link"></span>
+            <input type="text" id="qrText" class="qr-input" placeholder="Enter URL, text, phone, etc.">
+        </div>
+        <button class="btn" onclick="generateQR()" id="genBtn">Generate QR Code</button>
+        <div class="qr-area" id="qrPreview">
+            <canvas id="qrCanvas" width="220" height="220"></canvas>
+        </div>
+        <button class="btn" onclick="downloadQR()" id="downloadBtn" disabled>Download QR Code</button>
+        <div class="note">Your QR code is private &mdash; nothing is stored or sent to a server.</div>
+    </div>
+    <script>
+        feather.replace();
+        let qr;
+        const qrCanvas = document.getElementById('qrCanvas');
+        const qrTextInput = document.getElementById('qrText');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const genBtn = document.getElementById('genBtn');
+
+        function generateQR() {
+            const value = qrTextInput.value.trim();
+            if (!value) {
+                downloadBtn.disabled = true;
+                qrCanvas.getContext('2d').clearRect(0,0,qrCanvas.width,qrCanvas.height);
+                return;
+            }
+            qr = new QRious({
+                element: qrCanvas,
+                value: value,
+                size: 220,
+                background: '#fff',      // WHITE background
+                foreground: '#000'       // BLACK foreground
+            });
+            downloadBtn.disabled = false;
+        }
+
+        function downloadQR() {
+            const link = document.createElement('a');
+            link.download = 'euzaar-qr.png';
+            link.href = qrCanvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Optional: auto-generate on Enter key
+        qrTextInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                generateQR();
+            }
+        });
+    </script>
+</body>
+</html>
