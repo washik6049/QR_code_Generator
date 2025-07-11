@@ -9,37 +9,52 @@
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap" rel="stylesheet">
     <style>
-        body {
+        :root {
+            --gradient-bg: linear-gradient(135deg, #6536f8 0%, #b06ab3 100%);
+            --container-bg: rgba(255,255,255,0.12);
+            --container-border: rgba(255,255,255,0.18);
+            --input-bg: rgba(255,255,255,0.82);
+            --primary-btn: linear-gradient(90deg,#6536f8 60%, #b06ab3 100%);
+            --btn-radius: 9px;
+        }
+        html, body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            width: 100vw;
             font-family: 'Poppins', Arial, sans-serif;
-            background: linear-gradient(135deg, #6536f8 0%, #b06ab3 100%);
+            background: var(--gradient-bg);
+            box-sizing: border-box;
+        }
+        body {
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
         }
         .main-container {
-            background: rgba(255,255,255,0.12);
+            background: var(--container-bg);
             box-shadow: 0 6px 24px rgba(70,0,220,0.20);
             border-radius: 28px;
-            padding: 40px 32px 32px 32px;
-            max-width: 380px;
-            width: 100%;
+            padding: 6vw 5vw 2.4em 5vw;
+            max-width: 420px;
+            width: 95vw;
+            min-width: 0;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.18);
+            border: 1px solid var(--container-border);
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
         .brand {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 18px;
         }
         .brand-icon {
-            background: linear-gradient(135deg,#6536f8 70%, #b06ab3 100%);
+            background: var(--primary-btn);
             color: #fff;
             font-weight: bold;
             border-radius: 10px;
@@ -55,7 +70,7 @@
             text-shadow: 0 2px 7px rgba(101,54,248,0.07);
         }
         .title {
-            font-size: 1.37em;
+            font-size: 1.23em;
             font-weight: 500;
             color: #fff;
             margin-bottom: 18px;
@@ -64,7 +79,7 @@
         }
         .input-group {
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             position: relative;
         }
         .input-icon {
@@ -76,13 +91,13 @@
             font-size: 18px;
         }
         .qr-input {
-            width: 85%;
+            width: 100%;
             padding: 12px 14px 12px 40px;
             border: none;
-            border-radius: 9px;
+            border-radius: var(--btn-radius);
             font-size: 1em;
             font-family: inherit;
-            background: rgba(255,255,255,0.82);
+            background: var(--input-bg);
             box-shadow: 0 1px 8px rgba(101,54,248,0.07);
             outline: none;
             transition: box-shadow 0.17s;
@@ -90,17 +105,21 @@
         .qr-input:focus {
             box-shadow: 0 2px 16px rgba(101,54,248,0.15);
         }
-        .btn {
+        .button-row {
+            display: flex;
+            gap: 10px;
             width: 100%;
-            background: linear-gradient(90deg,#6536f8 60%, #b06ab3 100%);
+            margin-bottom: 8px;
+        }
+        .btn {
+            flex: 1;
+            background: var(--primary-btn);
             color: #fff;
             border: none;
-            border-radius: 9px;
-            padding: 12px;
+            border-radius: var(--btn-radius);
+            padding: 12px 0;
             font-size: 1.07em;
             font-weight: 500;
-            margin-bottom: 10px;
-            margin-top: 8px;
             letter-spacing: 0.3px;
             cursor: pointer;
             box-shadow: 0 1px 7px rgba(101,54,248,0.10);
@@ -113,17 +132,26 @@
             box-shadow: none;
         }
         .qr-area {
-            margin: 18px 0 12px 0;
-            width: 244px; height: 244px;
+            margin: 16px 0 12px 0;
+            width: 100%;
             display: flex; align-items: center; justify-content: center;
             background: rgba(255,255,255,0.34);
             border-radius: 18px;
             box-shadow: 0 2px 8px rgba(101,54,248,0.11);
             border: 1.5px solid rgba(101,54,248,0.10);
             transition: background 0.16s;
+            min-height: 44vw;
+            max-width: 320px;
+            max-height: 320px;
         }
         #qrCanvas {
             background: #fff;
+            width: 60vw;
+            height: 60vw;
+            max-width: 220px;
+            max-height: 220px;
+            min-width: 120px;
+            min-height: 120px;
         }
         .note {
             text-align: center;
@@ -132,12 +160,44 @@
             margin-top: 10px;
             letter-spacing: 0.1px;
         }
-        @media (max-width:500px) {
+        .footer {
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            color: #c1b5e5;
+            margin-top: 1.6em;
+            margin-bottom: 0.1em;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding-bottom: 0.6em;
+            letter-spacing: 0.07em;
+            background: none;
+            user-select: none;
+        }
+        @media (max-width:700px) {
             .main-container {
-                max-width: 97vw;
-                padding: 26px 7vw;
+                padding: 5vw 2vw 2.4em 2vw;
+                max-width: 98vw;
             }
-            .qr-area { width: 98vw; max-width: 94vw; height: auto; min-height: 164px;}
+            #qrCanvas {
+                width: 58vw; height: 58vw;
+                max-width: 220px; max-height: 220px;
+            }
+        }
+        @media (max-width:400px) {
+            .main-container {
+                padding: 4vw 1vw 2.4em 1vw;
+            }
+            #qrCanvas {
+                width: 92vw; height: 92vw;
+                max-width: 150px; max-height: 150px;
+                min-width: 60px; min-height: 60px;
+            }
+            .footer {
+                font-size: 11px;
+                padding-bottom: 0.4em;
+            }
         }
     </style>
     <!-- Feather icons CDN for input icon -->
@@ -154,12 +214,18 @@
             <span class="input-icon" data-feather="link"></span>
             <input type="text" id="qrText" class="qr-input" placeholder="Enter URL, text, phone, etc.">
         </div>
-        <button class="btn" onclick="generateQR()" id="genBtn">Generate QR Code</button>
+        <div class="button-row">
+            <button class="btn" onclick="generateQR()" id="genBtn">Generate QR Code</button>
+            <button class="btn" onclick="tryAgain()" id="tryBtn" style="background:#ee5a4e;">Try Again</button>
+        </div>
         <div class="qr-area" id="qrPreview">
             <canvas id="qrCanvas" width="220" height="220"></canvas>
         </div>
         <button class="btn" onclick="downloadQR()" id="downloadBtn" disabled>Download QR Code</button>
         <div class="note">Your QR code is private &mdash; nothing is stored or sent to a server.</div>
+        <div class="footer">
+            &copy; 2024 Washik Wali Faieaz. All rights reserved.
+        </div>
     </div>
     <script>
         feather.replace();
@@ -167,10 +233,19 @@
         const qrCanvas = document.getElementById('qrCanvas');
         const qrTextInput = document.getElementById('qrText');
         const downloadBtn = document.getElementById('downloadBtn');
-        const genBtn = document.getElementById('genBtn');
+
+        function getCanvasSize() {
+            // Responsive sizing: 60vw, but max 220, min 100
+            const vw = Math.min(window.innerWidth, window.innerHeight);
+            return Math.max(100, Math.min(220, Math.round(vw * 0.6)));
+        }
 
         function generateQR() {
             const value = qrTextInput.value.trim();
+            const size = getCanvasSize();
+            qrCanvas.width = size;
+            qrCanvas.height = size;
+
             if (!value) {
                 downloadBtn.disabled = true;
                 qrCanvas.getContext('2d').clearRect(0,0,qrCanvas.width,qrCanvas.height);
@@ -179,11 +254,18 @@
             qr = new QRious({
                 element: qrCanvas,
                 value: value,
-                size: 220,
+                size: size,
                 background: '#fff',      // WHITE background
                 foreground: '#000'       // BLACK foreground
             });
             downloadBtn.disabled = false;
+        }
+
+        function tryAgain() {
+            qrTextInput.value = "";
+            qrCanvas.getContext('2d').clearRect(0,0,qrCanvas.width,qrCanvas.height);
+            downloadBtn.disabled = true;
+            qrTextInput.focus();
         }
 
         function downloadQR() {
@@ -193,11 +275,26 @@
             link.click();
         }
 
-        // Optional: auto-generate on Enter key
+        // Auto-generate QR on Enter key
         qrTextInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 generateQR();
             }
+        });
+
+        // Auto-resize QR on window resize (for better UX)
+        window.addEventListener('resize', function() {
+            // Only redraw if there's a value present
+            if (qrTextInput.value.trim()) {
+                generateQR();
+            }
+        });
+
+        // Initial blank QR canvas sizing
+        window.addEventListener('DOMContentLoaded', function() {
+            const size = getCanvasSize();
+            qrCanvas.width = size;
+            qrCanvas.height = size;
         });
     </script>
 </body>
