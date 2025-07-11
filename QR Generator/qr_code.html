@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>QR Code Generator | Euzaar</title>
+    <title>QR Code Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- qrious CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
@@ -146,8 +146,8 @@
 <body>
     <div class="main-container">
         <div class="brand">
-            <span class="brand-icon">E</span>
-            <span class="brand-text">Euzaar QR</span>
+            <span class="brand-icon">Q</span>
+            <span class="brand-text">QR Code Generator</span>
         </div>
         <div class="title">Generate a QR Code for anything</div>
         <div class="input-group">
@@ -188,7 +188,7 @@
 
         function downloadQR() {
             const link = document.createElement('a');
-            link.download = 'euzaar-qr.png';
+            link.download = 'qr.png';
             link.href = qrCanvas.toDataURL('image/png');
             link.click();
         }
